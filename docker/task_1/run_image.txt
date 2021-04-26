@@ -1,0 +1,2 @@
+docker pull yeseniiaborzova/time_printing_image
+docker run yeseniiaborzova/time_printing_image
