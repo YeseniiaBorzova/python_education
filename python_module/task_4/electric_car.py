@@ -17,8 +17,8 @@ class ElectricCar(Car, Electricity):
     def __str__(self):
         """To string method"""
 
-        return "Electric car:" + self.get_name() + " " + self.get_car_model() + " " + \
-               self.get_type_of_car() + ", Power adapter characteristics(" + \
+        return "Electric car:" + self.get_name() + " " + self._model + " " + \
+               self._type_of_car + ", Power adapter characteristics(" + \
                str(self.get_voltage()) + "V, " + str(self.get_amperage()) \
                + "A), max passengers: " + str(self.get_amount_of_passengers()) + ", wheels:" \
                + str(self.get_amount_of_wheels()) + ", has engine: " + str(self.get_engine()) \
