@@ -6,38 +6,38 @@ from transport import Transport
 class Motorcycle(Transport):
     """Motorcycle representing class inherited from base Transport class"""
 
-    has_engine = True
+    _has_engine = True
 
-    def __init__(self, model, name, amount_of_passengers, amount_of_wheels):
+    def __init__(self, model: str, name: str, amount_of_passengers: int, amount_of_wheels: int):
         """Constructor"""
 
-        self.model = model
+        self._model = model
         super().__init__(name, amount_of_passengers, amount_of_wheels)
 
     def __str__(self):
         """To string method"""
 
-        return "Motorcycle: " + self.name + ", has engine:" + str(self.has_engine) + \
+        return "Motorcycle: " + self._name + ", has engine:" + str(self._has_engine) + \
                ", passengers amount:" + \
-               str(self.amount_of_passengers) + ", Model: " + self.model + \
-               ", amount of wheels: " + str(self.amount_of_wheels)
+               str(self._amount_of_passengers) + ", Model: " + self._model + \
+               ", amount of wheels: " + str(self._amount_of_wheels)
 
-    def get_motorcycle_model(self):
+    def get_motorcycle_model(self) -> str:
         """:return model of particular motorcycle"""
 
-        return "Motorcycle model: " + self.model
+        return self._model
 
-    def get_name(self):
+    def get_name(self) -> str:
         """:return name of particular a motorcycle"""
 
-        return "Motorcycle: " + self.name
+        return self._name
 
-    def get_amount_of_passengers(self):
+    def get_amount_of_passengers(self) -> int:
         """:return amount of passengers of a particular motorcycle"""
 
-        return "Motorcycle amount of passengers: " + self.amount_of_passengers
+        return self._amount_of_passengers
 
-    def get_amount_of_wheels(self):
+    def get_amount_of_wheels(self) -> int:
         """:return amount of wheels of a particular motorcycle"""
 
-        return "Motorcycle amount of wheels: " + self.amount_of_wheels
+        return self._amount_of_wheels

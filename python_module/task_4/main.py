@@ -3,6 +3,7 @@ from bicycle import Bicycle
 from motorcycle import Motorcycle
 from car import Car
 from bus import Bus
+from electric_car import ElectricCar
 
 
 if __name__ == "__main__":
@@ -15,7 +16,11 @@ if __name__ == "__main__":
     laz_bus = Bus(name="LAZ695", length=9.2,
                   amount_of_passengers=33, amount_of_wheels=4)
 
-    print(gt_bicycle.__str__())
-    print(ducati_motorcycle.__str__())
-    print(honda_car.__str__())
-    print(laz_bus.__str__())
+    bmw_i8 = ElectricCar(name="BMW", model="i8", type_of_car="coupe", amount_of_passengers=2,
+                         amount_of_wheels=4, voltage=30, amperage=5)
+
+    print(gt_bicycle)
+    print(ducati_motorcycle)
+    print(honda_car)
+    print(laz_bus)
+    print(bmw_i8)

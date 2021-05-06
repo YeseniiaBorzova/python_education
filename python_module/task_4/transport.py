@@ -4,24 +4,24 @@
 class Transport:
     """Class representing base vehicle"""
 
-    def __init__(self, name, amount_of_passengers, amount_of_wheels):
+    def __init__(self, name: str, amount_of_passengers: int, amount_of_wheels: int):
         """Constructor"""
 
-        self.name = name
-        self.amount_of_passengers = amount_of_passengers
-        self.amount_of_wheels = amount_of_wheels
+        self._name = name
+        self._amount_of_passengers = amount_of_passengers
+        self._amount_of_wheels = amount_of_wheels
 
-    def get_name(self):
+    def get_name(self) -> str:
         """:return name of vehicle"""
 
-        return "Transport name: " + self.name
+        return self._name
 
-    def get_amount_of_passengers(self):
+    def get_amount_of_passengers(self) -> int:
         """:return maximum possible amount of passengers"""
 
-        return "Transport max passengers: " + self.amount_of_passengers
+        return self._amount_of_passengers
 
-    def get_amount_of_wheels(self):
+    def get_amount_of_wheels(self) -> int:
         """:return amount of wheels"""
 
-        return "Transport amount of wheels: " + self.amount_of_wheels
+        return self._amount_of_wheels
