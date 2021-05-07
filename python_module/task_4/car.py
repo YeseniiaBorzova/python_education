@@ -1,7 +1,6 @@
 """This module represents car class inherited
     from base Transport class"""
 from transport import Transport
-from copy import copy
 
 
 class Car(Transport):

@@ -7,12 +7,12 @@ from electricity import Electricity
 class ElectricCar(Car, Electricity):
     """Class describes electric car inherited features from Car and Electricity"""
 
-    def __init__(self, type_of_car: str, model: str, name: str, amount_of_passengers: int,
-                 amount_of_wheels: int, voltage: float, amperage: float):
+    def __init__(self, type_of_car: str, model: str, name: str, **kwargs):
         """Constructor"""
 
-        Car.__init__(self, type_of_car, model, name, amount_of_passengers, amount_of_wheels)
-        Electricity.__init__(self, voltage, amperage)
+        Car.__init__(self, type_of_car, model, name,
+                     kwargs['amount_of_passengers'], kwargs['amount_of_wheels'])
+        Electricity.__init__(self, kwargs['voltage'], kwargs['amperage'])
 
     def __str__(self):
         """To string method"""

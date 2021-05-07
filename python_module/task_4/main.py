@@ -23,6 +23,8 @@ if __name__ == "__main__":
 
     bmw_i8 = ElectricCar(name="BMW", model="i8", type_of_car="coupe", amount_of_passengers=2,
                          amount_of_wheels=4, voltage=30, amperage=5)
+    hundai_kona = ElectricCar(name="Hundai", model="Kona", type_of_car='crossover', amount_of_passengers=5,
+                              amount_of_wheels=4, voltage=25, amperage=4)
 
     # testing
     print(gt_bicycle)
@@ -32,6 +34,7 @@ if __name__ == "__main__":
     print(honda_car1 + gw_voleex)
     print(laz_bus)
     print(bmw_i8)
+    print(hundai_kona)
     print(honda_car1.model)
     gw_voleex.type_of_car = "Liftback"
     copy_car = copy(honda_car1)
