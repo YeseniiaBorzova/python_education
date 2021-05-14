@@ -1,11 +1,13 @@
 """Module that contains Hangman class that imitates Hangman game"""
 import random
+from datetime import datetime
 
 
 class Hangman:
     """Game representing class"""
-    word_list = ["cat", "mathematics", "wombat", "insect", "honda", "civic", "dictionary"
-                 "tree", "astronaut", "lamp", "dragon", "python", "table", "sunflower"]
+    word_list = ["cat", "mathematics", "wombat", "insect", "honda", "civic", "dictionary",
+                 "tree", "astronaut", "lamp", "dragon", "python", "table", "sunflower",
+                 "sea", "mountain", "laptop", "computer", "australia", "extraordinary"]
     stages = ['''
 +---+
      |
@@ -43,6 +45,13 @@ class Hangman:
 / \  |
     ===''']
 
+    @staticmethod
+    def view_history(filename):
+        """prints history of all guessed and not guessed words"""
+        with open(filename, "r") as file:
+            history = file.read()
+            print(history)
+
     def take_random_word(self) -> str:
         """:return randomly selected word from list of available words"""
         word = random.choice(self.word_list)
@@ -56,6 +65,7 @@ class Hangman:
         """Main method responsible for the whole game process.
         It is responsible for guessing the word and displaying
         information about guessed letters"""
+        now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         word = self.take_random_word()
         word_completion = "_" * len(word)
         guessed = False
@@ -101,16 +111,22 @@ class Hangman:
             print(word_completion)
             print("\n")
         if guessed:
+            with open("history.txt", "a") as file:
+                file.write("Guessed:" + word + " time(" + now + "), \n")
             print("Good Job, you guessed the word!")
         else:
+            with open("history.txt", "a") as file:
+                file.write("Not guessed:" + word + " time(" + now + "), \n")
             print("I'm sorry, but your tries ran out. The word was " + word + ". Maybe next time!")
+        if input("Do you want to view history? (Y/N) ").upper() == "Y":
+            self.view_history("history.txt")
 
 
 def main():
     """function that creates Hangman game object and starts gaming loop"""
     hangman = Hangman()
     hangman.play()
-    while input("Again? (Y/N) ").upper() == "Y":
+    while input("Play again? (Y/N) ").upper() == "Y":
         hangman.play()
 
 
