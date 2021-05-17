@@ -8,6 +8,9 @@ class SentenceIterator:
         self._words = words
         self._index = 0
 
+    def __iter__(self):
+        return self
+
     def __next__(self):
         """method responsible for loop iteration trough the object"""
         if self._index < len(self._words):
@@ -25,17 +28,16 @@ class Sentence:
         """Constructor"""
         terminal_symbols = [".", "?", "!"]
         special_characters = ";:@#$%^&*()-+_=,<>/0123456789.?!"
+        if not isinstance(text, str):
+            raise TypeError("You tried to create a sentence not from 'str' type.")
         if text[-1] not in terminal_symbols:
             raise ValueError("Your sentence doesnt have terminal symbol at the end '.?!'")
-        elif not isinstance(text, str):
-            raise TypeError("You tried to create a sentence not from 'str' type.")
-        else:
-            self.words = []
-            self.other_chars = []
-            for symbol in text:
-                if symbol in special_characters:
-                    self.other_chars.append(symbol)
-                    text = text.replace(symbol, '')
+        self.words = []
+        self.other_chars = []
+        for symbol in text:
+            if symbol in special_characters:
+                self.other_chars.append(symbol)
+                text = text.replace(symbol, '')
 
         self.words = text.split()
 
