@@ -1,5 +1,4 @@
-"""Module with class representing Sentence and
-help class SentenceIterator for iteration purposes """
+"""Module representing Sentence entity"""
 
 
 class SentenceIterator:
@@ -24,19 +23,20 @@ class Sentence:
     and sorting other special symbols"""
     def __init__(self, text: str):
         """Constructor"""
-        self.words = []
-        self.other_chars = []
         terminal_symbols = [".", "?", "!"]
         special_characters = ";:@#$%^&*()-+_=,<>/0123456789.?!"
         if text[-1] not in terminal_symbols:
-            raise ValueError
+            raise ValueError("Your sentence doesnt have terminal symbol at the end '.?!'")
         elif not isinstance(text, str):
-            raise TypeError
+            raise TypeError("You tried to create a sentence not from 'str' type.")
         else:
+            self.words = []
+            self.other_chars = []
             for symbol in text:
                 if symbol in special_characters:
                     self.other_chars.append(symbol)
                     text = text.replace(symbol, '')
+
         self.words = text.split()
 
     def __repr__(self):
@@ -57,11 +57,10 @@ class Sentence:
         else:
             return self.words[key]
 
-    def _words(self, i=0):
+    def _words(self):
         """lazy iterator"""
-        while i < len(self.words):
-            yield print(self.words[i])
-            i += 1
+        for iterated_word in self.words:
+            yield iterated_word
 
 
 if __name__ == "__main__":
@@ -69,6 +68,10 @@ if __name__ == "__main__":
     print(sentence)
     print(sentence.words)
     print(sentence.other_chars)
-    gen = Sentence("Hello,  ,,how 2is  ####your :day @sir?")._words()
+    gen = Sentence("Welcome$$$$, to *sentence genetor!")._words()
+    print("\t Generator works:")
+    for word in gen:
+        print(word)
+    print("\t For loop works:")
     for word in sentence:
         print(word)
