@@ -23,6 +23,15 @@ class Order:
             else:
                 raise ValueError("Each order must have amounts of ordered food")
 
+    def __str__(self):
+        """to string"""
+        return f"Customer:{self._customer}, ordered food:{self._ordered_food}, " \
+               f"amounts:{self._amounts_of_ordered_food}"
+
+    def set_waiter(self, waiter):
+        """setting waiter to the order"""
+        self._waiter = waiter
+
     def get_customer(self):
         """:return customer associated with order"""
         return self._customer
@@ -33,8 +42,8 @@ class Order:
 
     def calculate_price_of_order(self) -> float:
         """:return price of the order"""
-        total_price = 0
+        price_list = []
         for price in self._ordered_food.values():
-            for amount in self._amounts_of_ordered_food:
-                total_price += price*amount
+            price_list.append(price)
+        total_price = sum([a*b for a, b in zip(price_list, self._amounts_of_ordered_food)])
         return total_price

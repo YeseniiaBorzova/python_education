@@ -38,6 +38,12 @@ class Restaurant(PublicCatering):
                 self._orders = kwargs['orders']
             super().__init__(**kwargs)
 
+    def __str__(self):
+        """to string"""
+        return f"In restaurant {self.get_name()} works:\n{len(self._cleaners)}-cleaners" \
+               f"\n{len(self._singer)}-singer \n{len(self._waiters)}-waiters\n" \
+               f"{len(self._managers)}-mangers \nand have\n{len(self._customers)}-customers"
+
     def get_customers_list(self) -> list:
         """:return list of customers of the restaurant"""
         return self._customers

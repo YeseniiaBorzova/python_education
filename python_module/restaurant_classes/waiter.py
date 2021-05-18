@@ -17,14 +17,14 @@ class Waiter(Human):
                 raise ValueError("Salary cannot be empty")
             if 'orders_to_bring' in kwargs:
                 self._orders_to_bring = kwargs['orders_to_bring']
-            else:
-                raise ValueError("Waiter must have a list of orders to bring")
             if 'customers_to_bring' in kwargs:
                 self._customers_to_bring = kwargs['customers_to_bring']
-            else:
-                raise ValueError("Waiter must have a list of customers to which to bring orders")
 
             super().__init__(**kwargs)
+
+    def __str__(self):
+        """to string"""
+        return f"Name:{self.get_name()}, {self.get_surname()}(waiter)"
 
     def set_orders_list(self, order_list):
         """setting list of orders of a waiter"""

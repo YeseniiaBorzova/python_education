@@ -18,6 +18,10 @@ class Singer(Human):
                 self._song_list = kwargs['song_list']
             super().__init__(**kwargs)
 
+    def __str__(self):
+        """to string"""
+        return f"Name:{self.get_name()}, {self.get_surname()}(singer)"
+
     def get_salary(self) -> float:
         """:return salary of the singer"""
         return self._salary

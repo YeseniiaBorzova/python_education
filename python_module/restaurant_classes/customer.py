@@ -14,6 +14,10 @@ class Customer(Human):
                 raise ValueError("Phone number cannot be empty")
             super().__init__(**kwargs)
 
+    def __str__(self):
+        """to string"""
+        return f"Phone number:{self._phone_number}, name:{self.get_name()} {self.get_surname()}"
+
     def get_phone_number(self) -> str:
         """:return phone number of the customer"""
         return self._phone_number

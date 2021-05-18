@@ -16,6 +16,10 @@ class Manager(Human):
                 raise ValueError("Salary cannot be empty")
             super().__init__(**kwargs)
 
+    def __str__(self):
+        """to string"""
+        return f"Name:{self.get_name()}, {self.get_surname()}(manager)"
+
     def get_salary(self) -> float:
         """:return salary of the manager"""
         return self._salary
@@ -24,7 +28,7 @@ class Manager(Human):
     def manage_problems():
         """static method imitating problem solving process"""
         print("Searching for problems...")
-        sleep(10)
+        sleep(1)
         print("Solving problems...")
-        sleep(10)
+        sleep(1)
         print("Problems solved!")

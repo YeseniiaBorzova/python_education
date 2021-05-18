@@ -9,7 +9,7 @@ class Human:
         """Constructor"""
         if kwargs is not None:
             if 'birthdate' in kwargs:
-                self._birthdate = datetime.strptime(kwargs['birthdate'], "%d-%m-%y")
+                self._birthdate = datetime.date(datetime.strptime(kwargs['birthdate'], "%d-%m-%Y"))
             else:
                 raise ValueError("Birthdate cannot be empty")
             if 'name' in kwargs:
@@ -24,6 +24,10 @@ class Human:
                 self._gender = kwargs['gender']
             else:
                 raise ValueError("Gender cannot be empty")
+
+    def __str__(self):
+        """to string"""
+        return f"Name:{self._name}, {self._surname}"
 
     def get_birthdate(self) -> datetime:
         """:return humans` birthdate"""
