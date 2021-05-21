@@ -8,28 +8,18 @@ class Human:
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'birthdate' in kwargs:
-                self._birthdate = datetime.date(datetime.strptime(kwargs['birthdate'], "%d-%m-%Y"))
-            else:
-                raise ValueError("Birthdate cannot be empty")
-            if 'name' in kwargs:
-                self._name = kwargs['name']
-            else:
-                raise ValueError("Name cannot be empty")
-            if 'surname' in kwargs:
-                self._surname = kwargs['surname']
-            else:
-                raise ValueError("Surname cannot be empty")
-            if 'gender' in kwargs:
-                self._gender = kwargs['gender']
-            else:
-                raise ValueError("Gender cannot be empty")
+
+            self._birthdate = datetime.date(datetime.strptime(kwargs.get('birthdate', "Human must have birthdate"),
+                                                              "%d-%m-%Y"))
+            self._name = kwargs.get('name', "Human must have name")
+            self._surname = kwargs.get('surname', "Human must have surname")
+            self._gender = kwargs.get('gender', "Human must have gender")
 
     def __str__(self):
         """to string"""
         return f"Name:{self._name}, {self._surname}"
 
-    def get_birthdate(self) -> datetime:
+    def get_birthdate(self) -> datetime.date:
         """:return humans` birthdate"""
         return self._birthdate
 

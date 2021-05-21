@@ -1,5 +1,5 @@
 """Module containing base class representing any public catering place"""
-from building import Building
+from main_classes.building import Building
 
 
 class PublicCatering(Building):
@@ -7,14 +7,8 @@ class PublicCatering(Building):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'menu' in kwargs:
-                self._menu = kwargs['menu']
-            else:
-                raise ValueError("Menu cannot be empty")
-            if 'name' in kwargs:
-                self._name = kwargs['name']
-            else:
-                raise ValueError("Name cannot be empty")
+            self._menu = kwargs.get('menu', "Public catering place must have menu")
+            self._name = kwargs.get('name', "Public catering place must have name")
             super().__init__(**kwargs)
 
     def get_menu(self) -> dict:

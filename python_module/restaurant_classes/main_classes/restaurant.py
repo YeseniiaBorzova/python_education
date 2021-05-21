@@ -1,7 +1,8 @@
 """Module containing restaurant entity"""
+import random
 
-from public_catering import PublicCatering
-from order import Order
+from main_classes.public_catering import PublicCatering
+from main_classes.order import Order
 
 
 class Restaurant(PublicCatering):
@@ -16,26 +17,12 @@ class Restaurant(PublicCatering):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'customers' in kwargs:
-                self._customers = kwargs['customers']
-            else:
-                raise ValueError("Restaurant must have customers list")
-            if 'waiters' in kwargs:
-                self._waiters = kwargs['waiters']
-            else:
-                raise ValueError("Restaurant must have waiters list")
-            if 'managers' in kwargs:
-                self._managers = kwargs['managers']
-            else:
-                raise ValueError("Restaurant must have managers list")
-            if 'cleaners' in kwargs:
-                self._cleaners = kwargs['cleaners']
-            else:
-                raise ValueError("Restaurant must have cleaners list")
-            if 'singer' in kwargs:
-                self._singer = kwargs['singer']
-            if 'orders' in kwargs:
-                self._orders = kwargs['orders']
+            self._customers = kwargs.get('customers', "Restaurant must have customers")
+            self._waiters = kwargs.get('waiters', "Restaurant must have waiters")
+            self._managers = kwargs.get('managers', "Restaurant must have managers")
+            self._cleaners = kwargs.get('cleaners', "Restaurant must have cleaners")
+            self._singer = kwargs.get('singer')
+            self._orders = kwargs.get('orders')
             super().__init__(**kwargs)
 
     def __str__(self):
@@ -48,17 +35,41 @@ class Restaurant(PublicCatering):
         """:return list of customers of the restaurant"""
         return self._customers
 
+    def get_customer(self, customer):
+        """:return customer if it is present in this particular restaurant"""
+        if customer in self._customers:
+            return customer
+        return "No such customer in the restaurant"
+
     def get_waiters_list(self) -> list:
         """:return list of waiters of the restaurant"""
         return self._waiters
+
+    def get_waiter(self, waiter):
+        """:return waiter if it is present in this particular restaurant"""
+        if waiter in self._waiters:
+            return waiter
+        return "No such waiter in the restaurant"
 
     def get_managers_list(self) -> list:
         """:return list of managers of the restaurant"""
         return self._managers
 
+    def get_manager(self, manager):
+        """:return manager if it is present in this particular restaurant"""
+        if manager in self._managers:
+            return manager
+        return "No such manager in the restaurant"
+
     def get_cleaners_list(self) -> list:
         """:return list of cleaners of the restaurant"""
         return self._cleaners
+
+    def get_cleaner(self, cleaner):
+        """:return cleaner if it is present in this particular restaurant"""
+        if cleaner in self._cleaners:
+            return cleaner
+        return "No such cleaner in the restaurant"
 
     def get_orders_list(self) -> list:
         """:return list of orders of the restaurant"""
@@ -105,6 +116,32 @@ class Restaurant(PublicCatering):
         self.append_order(new_order)
 
     def set_order_to_waiter(self, order, waiter):
-        """setting order to a waiter"""
+        """setting order to orders list of waiter"""
         if waiter in self._waiters and order in self._orders:
             waiter.set_order(order)
+
+    def set_customer_to_waiter(self, customer, waiter):
+        """setting customer to customers list of waiter"""
+        if waiter in self._waiters and customer in self._customers:
+            waiter.set_customer(customer)
+
+    def manage_problems(self, manager):
+        """calling manage"""
+        if manager in self._managers:
+            manager.manage_problems()
+
+    def clean_all(self, cleaner):
+        """cleans all the mess in the restaurant"""
+        if cleaner in self._cleaners:
+            cleaner.clean_all_the_mess()
+
+    def entertain_customers(self):
+        """chooses a random song to sing to customers"""
+        self._singer.sing_a_song()
+
+    def bring_all_the_orders(self, order):
+        """chooses a random waiter to bring order to customer"""
+        waiter = random.choice(self._waiters)
+        print(f"\tWaiter that is assigned this order:{waiter}")
+        waiter.take_an_order(order)
+

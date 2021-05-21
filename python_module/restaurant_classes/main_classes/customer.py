@@ -1,6 +1,6 @@
 """Module representing customer entity"""
 
-from human import Human
+from main_classes.human import Human
 
 
 class Customer(Human):
@@ -8,10 +8,7 @@ class Customer(Human):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'phone_number' in kwargs:
-                self._phone_number = kwargs["phone_number"]
-            else:
-                raise ValueError("Phone number cannot be empty")
+            self._phone_number = kwargs.get("phone_number", "Customer must have phone number")
             super().__init__(**kwargs)
 
     def __str__(self):

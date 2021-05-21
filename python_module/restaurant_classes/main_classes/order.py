@@ -8,20 +8,11 @@ class Order:
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'customer' in kwargs:
-                self._customer = kwargs['customer']
-            else:
-                raise ValueError("Each order must have its customer")
-            if 'waiter' in kwargs:
-                self._waiter = kwargs['waiter']
-            if 'ordered_food' in kwargs:
-                self._ordered_food = kwargs['ordered_food']
-            else:
-                raise ValueError("Each order must have dict with ordered food")
-            if 'amounts_of_ordered_food' in kwargs:
-                self._amounts_of_ordered_food = kwargs['amounts_of_ordered_food']
-            else:
-                raise ValueError("Each order must have amounts of ordered food")
+            self._customer = kwargs.get('customer', "Order must have customer")
+            self._waiter = kwargs.get('waiter')
+            self._ordered_food = kwargs.get('ordered_food', "Ordered must have list of ordered positions")
+            self._amounts_of_ordered_food = kwargs.get('amounts_of_ordered_food',
+                                                       "Order must have amounts of ordered positions")
 
     def __str__(self):
         """to string"""

@@ -1,6 +1,6 @@
 """Module representing waiter entity"""
 
-from human import Human
+from main_classes.human import Human
 
 
 class Waiter(Human):
@@ -11,15 +11,9 @@ class Waiter(Human):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'salary' in kwargs:
-                self._salary = float(kwargs['salary'])
-            else:
-                raise ValueError("Salary cannot be empty")
-            if 'orders_to_bring' in kwargs:
-                self._orders_to_bring = kwargs['orders_to_bring']
-            if 'customers_to_bring' in kwargs:
-                self._customers_to_bring = kwargs['customers_to_bring']
-
+            self._salary = float(kwargs.get('salary', "Salary cannot be empty"))
+            self._orders_to_bring = kwargs.get('orders_to_bring', [])
+            self._customers_to_bring = kwargs.get('customers_to_bring', [])
             super().__init__(**kwargs)
 
     def __str__(self):
@@ -31,21 +25,25 @@ class Waiter(Human):
         self._orders_to_bring = order_list
 
     def set_order(self, order):
-        """setting order to a waiter"""
+        """appending order to order list"""
         self._orders_to_bring.append(order)
 
     def set_customers_list(self, customer_list):
         """setting list of customers to the waiter"""
         self._customers_to_bring = customer_list
 
+    def set_customer(self, customer):
+        """appending customer to customers list"""
+        self._customers_to_bring.append(customer)
+
     def get_salary(self) -> float:
         """:return salary of the waiter"""
         return self._salary
 
-    def take_an_order(self):
+    @staticmethod
+    def take_an_order(order):
         """method imitating taking of order"""
-        for order in self._orders_to_bring:
-            print(f"Taking order:{order}")
+        print(f"Taking order:{order}")
 
     def bring_order_to_customer(self):
         """method imitating brining orders to customers"""

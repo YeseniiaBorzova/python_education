@@ -1,6 +1,7 @@
 """Module containing singer entity"""
 
-from human import Human
+from main_classes.human import Human
+from random import choice
 
 
 class Singer(Human):
@@ -10,12 +11,8 @@ class Singer(Human):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'salary' in kwargs:
-                self._salary = float(kwargs['salary'])
-            else:
-                raise ValueError("Salary cannot be empty")
-            if 'song_list' in kwargs:
-                self._song_list = kwargs['song_list']
+            self._salary = float(kwargs.get('salary', "Salary cannot be empty"))
+            self._song_list = kwargs.get('song_list', "No songs")
             super().__init__(**kwargs)
 
     def __str__(self):
@@ -33,3 +30,8 @@ class Singer(Human):
     def set_song_list(self, song_list):
         """setting repertoire a singer"""
         self._song_list = song_list
+
+    def sing_a_song(self):
+        """setting random song for singer to sing"""
+        song = choice(self._song_list)
+        print(f"Singing song:{song}")

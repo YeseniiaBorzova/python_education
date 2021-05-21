@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from human import Human
+from main_classes.human import Human
 
 
 class Cleaner(Human):
@@ -10,10 +10,7 @@ class Cleaner(Human):
     def __init__(self, **kwargs):
         """Constructor"""
         if kwargs is not None:
-            if 'salary' in kwargs:
-                self._salary = float(kwargs['salary'])
-            else:
-                raise ValueError("Salary cannot be empty")
+            self._salary = float(kwargs.get('salary', "Salary cannot be empty"))
             super().__init__(**kwargs)
 
     def __str__(self):
