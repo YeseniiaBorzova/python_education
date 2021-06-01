@@ -209,9 +209,14 @@ class DoublyLinkedList:
                 current.next = p
                 p.prev = current
 
+    def is_empty(self):
+        """:return true if list is empty"""
+        return self.head is None
+
 
 if __name__ == "__main__":
     doubly_linked_list = DoublyLinkedList()
+    print(doubly_linked_list.is_empty())
     doubly_linked_list.append(25)
     doubly_linked_list.append(11)
     doubly_linked_list.append(98)
@@ -220,6 +225,7 @@ if __name__ == "__main__":
     doubly_linked_list.append(126)
     doubly_linked_list.print_list()
     print('\n')
+    print(doubly_linked_list.is_empty())
     doubly_linked_list.insert_at_index(24, 2)
     doubly_linked_list.remove_by_index(4)
     doubly_linked_list.print_list()

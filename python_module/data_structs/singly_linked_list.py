@@ -151,15 +151,21 @@ class SinglyLinkedList:
             index += 1
         return "No such element"
 
+    def is_empty(self):
+        """:return true if list is empty"""
+        return self.head is None
+
 
 if __name__ == "__main__":
     singly_linked_list = SinglyLinkedList()
+    print(singly_linked_list.is_empty())
     singly_linked_list.append(69)
     singly_linked_list.append(2)
     singly_linked_list.prepend(20)
     singly_linked_list.append(122)
     singly_linked_list.print_list()
     print("\n")
+    print(singly_linked_list.is_empty())
     singly_linked_list.insert_at_index(250, 3)
     singly_linked_list.delete_by_index(4)
     singly_linked_list.print_list()
