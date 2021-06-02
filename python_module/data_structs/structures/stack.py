@@ -1,6 +1,6 @@
 """Module contains Stack class based on doubly linked list"""
 
-from doubly_linked_list import DoublyLinkedList
+from structures.doubly_linked_list import DoublyLinkedList
 
 
 class Stack(DoublyLinkedList):

@@ -1,6 +1,6 @@
 """Module contains Queue class based on doubly linked list"""
 
-from doubly_linked_list import DoublyLinkedList
+from structures.doubly_linked_list import DoublyLinkedList
 
 
 class Queue(DoublyLinkedList):
