@@ -14,6 +14,13 @@ class SinglyLinkedList:
         """Constructor"""
         self.head = None
 
+    def __iter__(self):
+        """Iterator for doubly linked list"""
+        cur = self.head
+        while cur is not None:
+            yield cur.data
+            cur = cur.next
+
     def append(self, data):
         """add element to the end of list"""
         new_node = SingleNode(data)

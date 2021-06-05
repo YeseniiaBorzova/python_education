@@ -17,6 +17,24 @@ class DoublyLinkedList:
         self.head = None
         self.tail = None
 
+    def __str__(self):
+        """to string magic method"""
+        s = ''
+        if self.head is None:
+            print("List is empty")
+        start = self.head
+        while start is not None:
+            s += f"{start.data}"
+            start = start.next
+        return s
+
+    def __iter__(self):
+        """Iterator for doubly linked list"""
+        cur = self.head
+        while cur is not None:
+            yield cur.data
+            cur = cur.next
+
     def prepend(self, val):
         """Adds element at start"""
         new_node = DoubleNode(val)
@@ -29,6 +47,11 @@ class DoublyLinkedList:
             self.head = new_node
             self.tail = new_node
             new_node.prev = None
+
+    def append_many(self, arr):
+        """adds several elements to list"""
+        for elem in arr:
+            self.append(elem)
 
     def append(self, val):
         """Adds element at the end"""
@@ -152,6 +175,15 @@ class DoublyLinkedList:
             index += 1
         return "No such element"
 
+    def get_elem(self, index):
+        """:return node of list by index"""
+        if index == 0:
+            return self.head
+        cur = self.head.next
+        for i in range(index-1):
+            cur = cur.next
+        return cur
+
     def get_size(self):
         """:return size of list"""
         count = 0
@@ -163,51 +195,34 @@ class DoublyLinkedList:
             count += 1
         return count
 
-    def remove_by_value(self, x):
-        """remove element from list by value"""
-        if self.head is None:
-            raise Exception("List is empty")
-        if self.head.next is None:
-            if self.head.data == x:
-                self.head = None
-            else:
-                return "Item not found"
-        if self.head.data == x:
-            self.head = self.head.next
+    def delete_node(self, node):
+        """deletes node from list"""
+        if self.head == self.tail == node:
+            self.head = self.tail = None
+        elif node == self.head:
+            self.head = node.next
             self.head.prev = None
-        n = self.head
-        while n.next is not None:
-            if n.data == x:
-                break
-            n = n.next
-        if n.next is not None:
-            n.prev.next = n.next
-            n.next.prev = n.prev
+        elif node == self.tail:
+            self.tail = node.prev
+            self.tail.next = None
         else:
-            if n.data == x:
-                n.prev.next = None
-            else:
-                return "Element not found"
+            node.prev.next = node.next
+            node.next.prev = node.prev
+
+    def remove_by_value(self, x):
+        """remove element by value from list"""
+        cur = self.head
+        while cur is not None:
+            if cur.data == x:
+                self.delete_node(cur)
+            cur = cur.next
 
     def remove_by_index(self, index):
         """remove element by index from list"""
-        if self.head is None:
-            raise ValueError("Deleting from empty list")
-        if index < 0 or index >= self.get_size():
-            raise IndexError("Index out of bounds")
-        current = self.head
-        if index == 0:
-            self.head = self.head.next
-            self.head.prev = None
-        else:
-            for i in range(index-1):
-                current = current.next
-            p = current.next.next
-            if p is None:
-                current.next = None
-            else:
-                current.next = p
-                p.prev = current
+        cur = self.head
+        for i in range(index-1):
+            cur = cur.next
+        self.delete_node(cur)
 
     def is_empty(self):
         """:return true if list is empty"""
@@ -229,3 +244,4 @@ if __name__ == "__main__":
     doubly_linked_list.insert_at_index(24, 2)
     doubly_linked_list.remove_by_index(4)
     doubly_linked_list.print_list()
+    print(doubly_linked_list.get_elem(5).data)
