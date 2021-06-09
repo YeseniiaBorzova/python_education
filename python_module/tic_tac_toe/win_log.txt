@@ -1,5 +1,2 @@
-INFO:root:Winner:Vasya, time:25/05/2021 22:43:01
-INFO:root:Winner:Petya, time:25/05/2021 22:43:18
-INFO:root:Winner:Masha, time:25/05/2021 22:43:44
-INFO:root:Winner:Dasha, time:25/05/2021 22:43:55
-INFO:root:Winner:Ihor, time:25/05/2021 22:52:30
+INFO:root:Winner:Vasya, time:09/06/2021 18:44:51
+INFO:root:Winner:Vasya, time:09/06/2021 18:45:08
