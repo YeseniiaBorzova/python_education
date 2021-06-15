@@ -32,6 +32,9 @@ class Board:
         self.welcome_user()
         self.display()
 
+    def get_board(self):
+        return self.cells
+
     def set_first_player_username(self, username):
         self.first_player = username
 
@@ -134,76 +137,168 @@ class Board:
             for j in range(3):
                 self.cells[i][j] = " "
 
+    def minimax(self, board, depth, maximizing):
+        if self.is_winner("X"):
+            return 10
+        elif self.is_winner("O"):
+            return -10
+        elif self.is_draw():
+            return 0
+        if maximizing:
+            best_score = -100
+            for i in range(len(self.cells)):
+                for j in range(len(self.cells[i])):
+                    if self.cells[i][j] == " ":
+                        self.cells[i][j] = "O"
+                        score = self.minimax(self.cells, 0, False)
+                        self.cells[i][j] = " "
+                        if score > best_score:
+                            best_score = score
+            return best_score
+        # else:
+        #     best_score = 80
+        #     for i in range(len(self.cells)):
+        #         for j in range(len(self.cells[i])):
+        #             if self.cells[i][j] == " ":
+        #                 self.cells[i][j] = "X"
+        #                 score = self.minimax(self.cells, depth+1, False)
+        #                 self.cells[i][j] = " "
+        #                 if score < best_score:
+        #                     best_score = score
+        #     return best_score
+
     def play(self):
-        username = input("Enter username for first player \n")
-        self.set_first_player_username(username)
-        choice = input(f"{username}, you want to play as X or O \n").upper()
+        play_choice = input("Do you want to play vs AI? Y/N \n").upper()
+        if play_choice == "N":
+            username = input("Enter username for first player \n")
+            self.set_first_player_username(username)
+            choice = input(f"{username}, you want to play as X or O \n").upper()
 
-        if choice == "X":
+            if choice == "X":
+                self.set_first_player_choice("X")
+                self.set_second_player_choice("O")
+            elif choice == "O":
+                self.set_first_player_choice("O")
+                self.set_second_player_choice("X")
+            else:
+                print("Incorrect input")
+
+            username = input("Enter username for second player \n")
+            self.set_second_player_username(username)
+
+            while True:
+                self.refresh_screen()
+                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                self.update_cell(x_choice, "X")
+                self.refresh_screen()
+
+                if self.is_winner("X"):
+                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
+                    logging.info(f"Winner:{self.identify_player('X')}, time:{now}")
+                    print(f"{self.identify_player('X')}, X wins\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score \nfirst player {self.first_player}:{str(self.first_player_score)} \n"
+                              f"second player {self.second_player}:{str(self.second_player_score)}")
+                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
+                        if clean_logs == "Y":
+                            self.clear_logs()
+                        break
+
+                if self.is_draw():
+                    print("Its a draw!!!\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
+                              f"{self.second_player}:{str(self.second_player_score)}")
+                        break
+
+                o_choice = tuple(map(int, input("Enter coordinates, where you want to put O \n").split(',')))
+                self.update_cell(o_choice, "O")
+
+                if self.is_winner("O"):
+                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
+                    logging.info(f"Winner:{self.identify_player('O')}, time:{now}")
+                    print(f"{self.identify_player('O')}, O wins\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
+                              f"{self.second_player}:{str(self.second_player_score)}")
+                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
+                        if clean_logs == "Y":
+                            self.clear_logs()
+                        break
+        elif play_choice == 'Y':
+            username = input("Enter username for first player \n")
+            self.set_first_player_username(username)
             self.set_first_player_choice("X")
-            self.set_second_player_choice("O")
-        elif choice == "O":
-            self.set_first_player_choice("O")
-            self.set_second_player_choice("X")
-        else:
-            print("Incorrect input")
 
-        username = input("Enter username for second player \n")
-        self.set_second_player_username(username)
+            while True:
+                self.refresh_screen()
+                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                self.update_cell(x_choice, "X")
+                self.refresh_screen()
+                if self.is_winner("X"):
+                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
+                    logging.info(f"Winner:{self.identify_player('X')}, time:{now}")
+                    print(f"{self.identify_player('X')}, X wins\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score \nfirst player {self.first_player}:{str(self.first_player_score)} \n"
+                              f"second player {self.second_player}:{str(self.second_player_score)}")
+                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
+                        if clean_logs == "Y":
+                            self.clear_logs()
+                        break
 
-        while True:
-            self.refresh_screen()
-            x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-            self.update_cell(x_choice, "X")
-            self.refresh_screen()
+                if self.is_draw():
+                    print("Its a draw!!!\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
+                              f"{self.second_player}:{str(self.second_player_score)}")
+                        break
 
-            if self.is_winner("X"):
-                now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
-                logging.info(f"Winner:{self.identify_player('X')}, time:{now}")
-                print(f"{self.identify_player('X')}, X wins\n")
-                play_again = input("Want to play again Y/N? \n").upper()
-                if play_again == "Y":
-                    self.reset_field()
-                    continue
-                else:
-                    print(f"Final score \nfirst player {self.first_player}:{str(self.first_player_score)} \n"
-                          f"second player {self.second_player}:{str(self.second_player_score)}")
-                    clean_logs = input("Do you want to clean logs? Y/N \n").upper()
-                    if clean_logs == "Y":
-                        self.clear_logs()
-                    break
+                self.minimax(self.get_board(), 0, True)
+                self.refresh_screen()
+                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                self.update_cell(x_choice, "X")
+                self.refresh_screen()
 
-            if self.is_draw():
-                print("Its a draw!!!\n")
-                play_again = input("Want to play again Y/N? \n").upper()
-                if play_again == "Y":
-                    self.reset_field()
-                    continue
-                else:
-                    print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
-                          f"{self.second_player}:{str(self.second_player_score)}")
-                    break
-
-            o_choice = tuple(map(int, input("Enter coordinates, where you want to put O \n").split(',')))
-            self.update_cell(o_choice, "O")
-
-            if self.is_winner("O"):
-                now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
-                logging.info(f"Winner:{self.identify_player('O')}, time:{now}")
-                print(f"{self.identify_player('O')}, O wins\n")
-                play_again = input("Want to play again Y/N? \n").upper()
-                if play_again == "Y":
-                    self.reset_field()
-                    continue
-                else:
-                    print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
-                          f"{self.second_player}:{str(self.second_player_score)}")
-                    clean_logs = input("Do you want to clean logs? Y/N \n").upper()
-                    if clean_logs == "Y":
-                        self.clear_logs()
-                    break
+                if self.is_winner("O"):
+                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
+                    logging.info(f"Winner:{self.identify_player('O')}, time:{now}")
+                    print(f"{self.identify_player('O')}, O wins\n")
+                    play_again = input("Want to play again Y/N? \n").upper()
+                    if play_again == "Y":
+                        self.reset_field()
+                        continue
+                    else:
+                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
+                              f"{self.second_player}:{str(self.second_player_score)}")
+                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
+                        if clean_logs == "Y":
+                            self.clear_logs()
+                        break
 
 
 if __name__ == "__main__":
