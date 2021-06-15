@@ -137,35 +137,49 @@ class Board:
             for j in range(3):
                 self.cells[i][j] = " "
 
-    def minimax(self, board, depth, maximizing):
-        if self.is_winner("X"):
+    def minimax(self, cells, depth, is_max):
+        if self.is_winner("O"):
             return 10
-        elif self.is_winner("O"):
+        elif self.is_winner("X"):
             return -10
         elif self.is_draw():
             return 0
-        if maximizing:
-            best_score = -100
-            for i in range(len(self.cells)):
-                for j in range(len(self.cells[i])):
-                    if self.cells[i][j] == " ":
-                        self.cells[i][j] = "O"
-                        score = self.minimax(self.cells, 0, False)
-                        self.cells[i][j] = " "
-                        if score > best_score:
-                            best_score = score
-            return best_score
-        # else:
-        #     best_score = 80
-        #     for i in range(len(self.cells)):
-        #         for j in range(len(self.cells[i])):
-        #             if self.cells[i][j] == " ":
-        #                 self.cells[i][j] = "X"
-        #                 score = self.minimax(self.cells, depth+1, False)
-        #                 self.cells[i][j] = " "
-        #                 if score < best_score:
-        #                     best_score = score
-        #     return best_score
+
+        if is_max:
+            max_score = -1000
+            for i in range(len(cells)):
+                for j in range(len(cells[i])):
+                    if cells[i][j] == " ":
+                        cells[i][j] = "O"
+                        max_score = max(max_score, self.minimax(cells, depth + 1, not is_max))
+                        cells[i][j] = " "
+            return max_score
+        else:
+            max_score = 1000
+            for i in range(len(cells)):
+                for j in range(len(cells[i])):
+                    if cells[i][j] == " ":
+                        cells[i][j] = "X"
+                        max_score = min(max_score, self.minimax(cells, depth + 1, not is_max))
+                        cells[i][j] = " "
+            return max_score
+
+    def find_best_move(self, cells):
+        best_val = -1000
+        best_move = (-1, -1)
+
+        for i in range(len(cells)):
+            for j in range(len(cells[i])):
+                if cells[i][j] == " ":
+                    cells[i][j] = "O"
+                    move_val = self.minimax(cells, 0, False)
+                    cells[i][j] = " "
+                    if move_val > best_val:
+                        best_move = (i+1, j+1)
+                        best_val = move_val
+
+        print("The value of the best Move is :", best_move)
+        return best_move
 
     def play(self):
         play_choice = input("Do you want to play vs AI? Y/N \n").upper()
@@ -245,60 +259,29 @@ class Board:
             self.set_first_player_choice("X")
 
             while True:
-                self.refresh_screen()
-                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-                self.update_cell(x_choice, "X")
-                self.refresh_screen()
-                if self.is_winner("X"):
-                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
-                    logging.info(f"Winner:{self.identify_player('X')}, time:{now}")
-                    print(f"{self.identify_player('X')}, X wins\n")
-                    play_again = input("Want to play again Y/N? \n").upper()
-                    if play_again == "Y":
-                        self.reset_field()
-                        continue
-                    else:
-                        print(f"Final score \nfirst player {self.first_player}:{str(self.first_player_score)} \n"
-                              f"second player {self.second_player}:{str(self.second_player_score)}")
-                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
-                        if clean_logs == "Y":
-                            self.clear_logs()
-                        break
 
-                if self.is_draw():
-                    print("Its a draw!!!\n")
-                    play_again = input("Want to play again Y/N? \n").upper()
-                    if play_again == "Y":
-                        self.reset_field()
-                        continue
-                    else:
-                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
-                              f"{self.second_player}:{str(self.second_player_score)}")
-                        break
-
-                self.minimax(self.get_board(), 0, True)
-                self.refresh_screen()
-                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-                self.update_cell(x_choice, "X")
+                move = self.find_best_move(self.get_board())
+                ai_choice = move
+                self.update_cell(ai_choice, "O")
                 self.refresh_screen()
 
                 if self.is_winner("O"):
-                    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                    logging.basicConfig(filename='win_log.txt', filemode='a', level=logging.INFO)
-                    logging.info(f"Winner:{self.identify_player('O')}, time:{now}")
-                    print(f"{self.identify_player('O')}, O wins\n")
-                    play_again = input("Want to play again Y/N? \n").upper()
-                    if play_again == "Y":
-                        self.reset_field()
-                        continue
-                    else:
-                        print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
-                              f"{self.second_player}:{str(self.second_player_score)}")
-                        clean_logs = input("Do you want to clean logs? Y/N \n").upper()
-                        if clean_logs == "Y":
-                            self.clear_logs()
-                        break
+                    print("AI wins")
+                    break
+
+                if self.is_draw():
+                    print("Draw")
+                    break
+
+                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                self.update_cell(x_choice, "X")
+                self.refresh_screen()
+
+                if self.is_winner("X"):
+                    print(f"X wins {self.get_first_layer_username()}")
+                    break
+
+
 
 
 if __name__ == "__main__":
