@@ -205,8 +205,8 @@ class Board:
                 try:
                     x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
                     self.update_cell(x_choice, "X")
-                except ValueError:
-                    print('Incorrect output!!')
+                except (ValueError, IndexError):
+                    print("Incorrect output!! Coordinates should be inputted in form '1,2'")
                 self.refresh_screen()
 
                 if self.is_winner("X"):
@@ -239,8 +239,8 @@ class Board:
                 try:
                     o_choice = tuple(map(int, input("Enter coordinates, where you want to put O \n").split(',')))
                     self.update_cell(o_choice, "O")
-                except ValueError:
-                    print('Incorrect output!!')
+                except (ValueError, IndexError):
+                    print("Incorrect output!! Coordinates should be inputted in form '1,2'")
 
                 if self.is_winner("O"):
                     now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -280,8 +280,8 @@ class Board:
                 try:
                     x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
                     self.update_cell(x_choice, "X")
-                except ValueError:
-                    print('Incorrect output!!')
+                except (ValueError, IndexError):
+                    print("Incorrect output!! Coordinates should be inputted in form '1,2'")
                 self.refresh_screen()
 
                 if self.is_winner("X"):
