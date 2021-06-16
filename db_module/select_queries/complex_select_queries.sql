@@ -41,10 +41,14 @@ SELECT product_title
 FROM products
 WHERE product_id NOT IN (SELECT DISTINCT product_id FROM cart_product);
 --4.2
-SELECT DISTINCT product_title FROM cart_product
-LEFT JOIN orders USING(cart_id)
-INNER JOIN products USING(product_id)
-WHERE order_status_id = 5;
+SELECT product_title FROM products
+WHERE product_id IN
+(SELECT product_id FROM cart_product
+WHERE cart_id IN
+(SELECT carts.cart_id from carts
+LEFT JOIN orders 
+ON orders.cart_id = carts.cart_id
+WHERE orders.cart_id is NULL))
 --4.3
 SELECT product_title, COUNT(cart_id) FROM products
 INNER JOIN cart_product
@@ -80,8 +84,9 @@ GROUP BY users.first_name, users.last_name
 ORDER BY  COUNT(carts.user_id) DESC
 LIMIT 5;
 --4.7
-SELECT first_name, last_name FROM users 
-INNER JOIN carts USING(user_id)
+SELECT first_name, last_name FROM users
+WHERE user_id IN
+(SELECT user_id FROM carts
 LEFT JOIN orders USING(cart_id)
-WHERE order_status_id = 5
+WHERE orders.cart_id is NULL)
 LIMIT 5;
