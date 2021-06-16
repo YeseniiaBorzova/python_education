@@ -202,8 +202,11 @@ class Board:
 
             while True:
                 self.refresh_screen()
-                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-                self.update_cell(x_choice, "X")
+                try:
+                    x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                    self.update_cell(x_choice, "X")
+                except ValueError:
+                    print('Incorrect output!!')
                 self.refresh_screen()
 
                 if self.is_winner("X"):
@@ -233,9 +236,11 @@ class Board:
                         print(f"Final score {self.first_player}:{str(self.first_player_score)} \n"
                               f"{self.second_player}:{str(self.second_player_score)}")
                         break
-
-                o_choice = tuple(map(int, input("Enter coordinates, where you want to put O \n").split(',')))
-                self.update_cell(o_choice, "O")
+                try:
+                    o_choice = tuple(map(int, input("Enter coordinates, where you want to put O \n").split(',')))
+                    self.update_cell(o_choice, "O")
+                except ValueError:
+                    print('Incorrect output!!')
 
                 if self.is_winner("O"):
                     now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -272,16 +277,16 @@ class Board:
                 if self.is_draw():
                     print("Draw")
                     break
-
-                x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-                self.update_cell(x_choice, "X")
+                try:
+                    x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                    self.update_cell(x_choice, "X")
+                except ValueError:
+                    print('Incorrect output!!')
                 self.refresh_screen()
 
                 if self.is_winner("X"):
                     print(f"X wins {self.get_first_layer_username()}")
                     break
-
-
 
 
 if __name__ == "__main__":
