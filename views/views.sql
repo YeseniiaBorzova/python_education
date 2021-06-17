@@ -15,7 +15,8 @@ INNER JOIN categories USING(category_id);
 
 DROP VIEW IF EXISTS products_with_categories;
 
-CREATE TABLE my_materialized_view AS SELECT 
+CREATE MATERIALIZED VIEW materialized_view AS
+SELECT 
 users.first_name, users.last_name, users.city, carts.total, 
 time_stamp, orders.created_at, orders.updated_at, 
 SUM(carts.total) AS money_spent_on_all_orders
@@ -26,7 +27,5 @@ WHERE carts.total > 500::money
 GROUP BY users.first_name, users.last_name, users.city, carts.total, 
 time_stamp, orders.created_at, orders.updated_at
 ORDER BY SUM(carts.total) DESC;
-
-CREATE MATERIALIZED VIEW materialized_view AS SELECT * FROM my_materialized_view;
 
 DROP MATERIALIZED VIEW IF EXISTS materialized_view;
