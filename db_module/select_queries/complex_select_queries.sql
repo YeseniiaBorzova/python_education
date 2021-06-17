@@ -69,10 +69,12 @@ GROUP BY product_title
 ORDER BY COUNT(orders.order_id) DESC
 LIMIT 10;
 --4.5
-SELECT SUM(total) AS "total_spend_money_on_orders", users.first_name, users.last_name FROM users
+SELECT SUM(carts.total) AS "total_spend_money_on_orders", users.first_name, users.last_name FROM users
 INNER JOIN carts USING(user_id)
+INNER JOIN orders USING(cart_id)
+WHERE order_status_id = 4
 GROUP BY user_id
-ORDER BY COUNT(users.first_name) DESC
+ORDER BY SUM(carts.total) DESC
 LIMIT 5;
 --4.6
 SELECT users.first_name, users.last_name, COUNT(carts.user_id) FROM users
@@ -84,9 +86,8 @@ GROUP BY users.first_name, users.last_name
 ORDER BY  COUNT(carts.user_id) DESC
 LIMIT 5;
 --4.7
-SELECT first_name, last_name FROM users
-WHERE user_id IN
-(SELECT user_id FROM carts
+SELECT users.first_name, users.last_name FROM users
+INNER JOIN carts USING(user_id)
 LEFT JOIN orders USING(cart_id)
-WHERE orders.cart_id is NULL)
+WHERE orders.cart_id is NULL
 LIMIT 5;
