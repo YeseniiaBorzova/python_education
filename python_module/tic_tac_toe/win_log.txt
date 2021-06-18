@@ -2,3 +2,4 @@ INFO:root:Winner:Vasya, time:09/06/2021 18:44:51
 INFO:root:Winner:Vasya, time:09/06/2021 18:45:08
 INFO:root:Winner:Floppa, time:14/06/2021 13:47:36
 INFO:root:Winner:Lena, time:16/06/2021 10:33:44
+INFO:root:Winner:Alisa, time:18/06/2021 12:01:04

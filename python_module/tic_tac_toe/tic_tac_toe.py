@@ -35,6 +35,14 @@ class Board:
     def get_board(self):
         return self.cells
 
+    def get_amount_of_free_cells(self):
+        count = 0
+        for i in range(3):
+            for j in range(3):
+                if self.cells[i][j] == " ":
+                    count += 1
+        return count
+
     def set_first_player_username(self, username):
         self.first_player = username
 
@@ -277,11 +285,19 @@ class Board:
                 if self.is_draw():
                     print("Draw")
                     break
-                try:
-                    x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
-                    self.update_cell(x_choice, "X")
-                except (ValueError, IndexError):
-                    print("Incorrect output!! Coordinates should be inputted in form '1,2'")
+
+                while True:
+                    try:
+                        x_choice = tuple(map(int, input("Enter coordinates, where you want to put X \n").split(',')))
+                        cell_count_before = self.get_amount_of_free_cells()
+                        self.update_cell(x_choice, "X")
+                        cell_count_after = self.get_amount_of_free_cells()
+                    except (ValueError, IndexError):
+                        cell_count_before = self.get_amount_of_free_cells()
+                        cell_count_after = self.get_amount_of_free_cells()
+                        print("Incorrect output!! Coordinates should be inputted in form '1,2'")
+                    if cell_count_before != cell_count_after:
+                        break
                 self.refresh_screen()
 
                 if self.is_winner("X"):
