@@ -47,18 +47,24 @@ CALL transaction_test(21, 'Category 21', 'Category 21 description.');
 
 
 --2.2
-CREATE OR REPLACE PROCEDURE inser_cart_product_test(start_product_id int, end_product_id int, start_cart_id int, end_cart_id int)
-   AS $$
-   	BEGIN
- 		FOR i IN start_product_id..end_product_id LOOP
- 			FOR j IN start_cart_id..end_cart_id LOOP
- 				 INSERT INTO cart_product VALUES (i, j);
- 			END LOOP;
- 		END LOOP;		
-  	END;
+ CREATE OR REPLACE PROCEDURE inser_cart_product_test(start_product_id int, end_product_id int, start_cart_id int, end_cart_id int)
+    AS $$
+    	DECLARE 
+ 	query text;
+    	BEGIN
+ 	query := 'INSERT INTO cart_product VALUES';
+  		FOR i IN start_product_id..end_product_id LOOP
+  			FOR j IN start_cart_id..end_cart_id LOOP
+			query := query || ' (' || i || ',' || j ||'),';
+				IF i = end_product_id AND j = end_cart_id THEN
+					query := query || ' (' || i || ',' || j ||');';
+				END IF;
+  			END LOOP;
+  		END LOOP;
+ 		EXECUTE query;
+   	END;
 $$ LANGUAGE plpgsql;
-
-CALL inser_cart_product_test(3, 4, 100, 105);
+CALL inser_cart_product_test(1, 3, 55, 60);
 
 --3
 CREATE OR REPLACE FUNCTION get_product_and_categories() RETURNS TABLE 
