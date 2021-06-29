@@ -127,6 +127,56 @@ INSERT INTO car_model VALUES
 (default, 'H6', 8),
 (default, 'H9', 8);
 
+
+
+CREATE SEQUENCE city_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE address_seq
+INCREMENT 2
+START 1;
+
+CREATE SEQUENCE id_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE tel_num_seq AS BIGINT
+INCREMENT 1
+START 3807433666;
+
+CREATE SEQUENCE cust_id_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE branch_id_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE car_id_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE car_num_seq
+INCREMENT 11
+START 1346;
+
+CREATE SEQUENCE rent_id_seq
+INCREMENT 1
+START 1;
+
+CREATE SEQUENCE customer_seq
+INCREMENT 1
+START 1
+MAXVALUE 2500;
+
+CREATE SEQUENCE car_seq
+INCREMENT 1
+START 1;
+
+
+
+
 --inserting 20 cities
 CREATE OR REPLACE PROCEDURE insert_cities( cities_amount int)
 AS $$
@@ -134,9 +184,6 @@ DECLARE
  	query text;
  	BEGIN
  	query := 'INSERT INTO city VALUES ';
- 	CREATE SEQUENCE city_seq
-	INCREMENT 1
- 	START 1;
  	FOR i IN 2..cities_amount LOOP
 	query := query || ' (' || nextval('city_seq') || ',' || '''city ' || currval('city_seq') || '''),';
  		IF i = cities_amount THEN
@@ -154,23 +201,10 @@ AS $$
 DECLARE
 	house_num int;
  	BEGIN
-		CREATE SEQUENCE address_seq
- 		INCREMENT 2
-     	START 1;
-		
-		DROP SEQUENCE id_seq;
-		CREATE SEQUENCE id_seq
-   		INCREMENT 1
-    	START 1;
-		
-		CREATE SEQUENCE tel_num_seq AS BIGINT
-    	INCREMENT 1
-    	START 3807433666;
-		
- 			FOR i IN 1..id_amount LOOP
-			house_num := floor(random()* (150-1 + 1) + 1);
- 			INSERT INTO address VALUES (nextval('id_seq'), 'street ' || nextval('address_seq')::varchar, house_num, nextval('tel_num_seq')::varchar);
- 			END LOOP;
+ 	FOR i IN 1..id_amount LOOP
+	house_num := floor(random()* (150-1 + 1) + 1);
+ 	INSERT INTO address VALUES (nextval('id_seq'), 'street ' || nextval('address_seq')::varchar, house_num, nextval('tel_num_seq')::varchar);
+ 	END LOOP;
  	END;
 $$ LANGUAGE plpgsql
 CALL insert_addresses(2000);
@@ -182,14 +216,11 @@ DECLARE
  	addres_id int;
  	city_id int;
   	BEGIN
- 		CREATE SEQUENCE cust_id_seq
- 		INCREMENT 1
- 		START 1;
- 			FOR i IN 1..customers_amount LOOP
- 			addres_id := floor(random()* (2000-1 + 1) + 1);
- 			city_id := floor(random()* (20-1 + 1) + 1);
- 			INSERT INTO customer VALUES (nextval('cust_id_seq'), 'name ' || currval('cust_id_seq')::varchar, 'surname ' || currval('cust_id_seq')::varchar, addres_id, city_id);
-  			END LOOP;
+ 	FOR i IN 1..customers_amount LOOP
+ 	addres_id := floor(random()* (2000-1 + 1) + 1);
+ 	city_id := floor(random()* (20-1 + 1) + 1);
+ 	INSERT INTO customer VALUES (nextval('cust_id_seq'), 'name ' || currval('cust_id_seq')::varchar, 'surname ' || currval('cust_id_seq')::varchar, addres_id, city_id);
+  	END LOOP;
   	END;
 $$ LANGUAGE plpgsql
 CALL insert_customers(5000);
@@ -201,14 +232,11 @@ DECLARE
   	addres_id int;
   	city_id int;
    	BEGIN
-  		CREATE SEQUENCE branch_id_seq
-  		INCREMENT 1
-  		START 1;
-  			FOR i IN 1..branch_amount LOOP
-  			addres_id := floor(random()* (2000-1 + 1) + 1);
-  			city_id := floor(random()* (20-1 + 1) + 1);
-  			INSERT INTO branch VALUES (nextval('branch_id_seq'), 'branch ' || currval('branch_id_seq')::varchar, addres_id, city_id);
-   			END LOOP;
+  	FOR i IN 1..branch_amount LOOP
+  	addres_id := floor(random()* (2000-1 + 1) + 1);
+  	city_id := floor(random()* (20-1 + 1) + 1);
+  	INSERT INTO branch VALUES (nextval('branch_id_seq'), 'branch ' || currval('branch_id_seq')::varchar, addres_id, city_id);
+   	END LOOP;
    	END;
 $$ LANGUAGE plpgsql
 CALL insert_branches(150);
@@ -220,20 +248,11 @@ DECLARE
   	model_id int;
   	rent_price int;
    	BEGIN
-	
-  		CREATE SEQUENCE car_id_seq
-  		INCREMENT 1
-  		START 1;
-		
-		CREATE SEQUENCE car_num_seq
-  		INCREMENT 11
-  		START 1346;
-		
-  			FOR i IN 1..car_amount LOOP
-  			model_id := floor(random()* (42-1 + 1) + 1);
-  			rent_price := floor(random()* (100-20 + 1) + 1);
-  			INSERT INTO car VALUES (nextval('car_id_seq'), rent_price::money, '# ' || nextval('car_num_seq')::varchar, model_id);
-   			END LOOP;
+  	FOR i IN 1..car_amount LOOP
+  	model_id := floor(random()* (42-1 + 1) + 1);
+  	rent_price := floor(random()* (100-20 + 1) + 1);
+  	INSERT INTO car VALUES (nextval('car_id_seq'), rent_price::money, '# ' || nextval('car_num_seq')::varchar, model_id);
+   	END LOOP;
    	END;
 $$ LANGUAGE plpgsql
 CALL insert_cars(3000);
@@ -244,25 +263,12 @@ AS $$
 DECLARE
     	customer_id int;
     	branch_id int;
-  		car_id int;
+  	car_id int;
      	BEGIN
-    		CREATE SEQUENCE rent_id_seq
-    		INCREMENT 1
-    		START 1;
-		
-  			CREATE SEQUENCE customer_seq
-    		INCREMENT 1
-    		START 1
-  			MAXVALUE 2500;
-		
-  			CREATE SEQUENCE car_seq
-    		INCREMENT 1
-    		START 1;
-		
-   			FOR i IN 1..rent_amount LOOP
-   			branch_id := floor(random()* (150-1 + 1) + 1);
-    			INSERT INTO rent(rent_id, customer_id, branch_id, car_id) VALUES (nextval('rent_id_seq'), nextval('customer_seq'), branch_id, nextval('car_seq'));
-     			END LOOP;
+   	FOR i IN 1..rent_amount LOOP
+   	branch_id := floor(random()* (150-1 + 1) + 1);
+    	INSERT INTO rent(rent_id, customer_id, branch_id, car_id) VALUES (nextval('rent_id_seq'), nextval('customer_seq'), branch_id, nextval('car_seq'));
+     	END LOOP;
     	END;
 $$ LANGUAGE plpgsql
 CALL insert_rents(2500);
